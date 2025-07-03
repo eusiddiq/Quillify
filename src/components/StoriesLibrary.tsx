@@ -29,7 +29,7 @@ interface Story {
 interface StoriesLibraryProps {
   onCreateStory: () => void;
   onEditStory: (storyId: string) => void;
-  onWriteStory: (storyId: string) => void;
+  onWriteStory: (storyId: string, storyTitle: string) => void;
 }
 
 const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLibraryProps) => {
@@ -200,7 +200,7 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onWriteStory(story.id)}>
+                    <DropdownMenuItem onClick={() => onWriteStory(story.id, story.title)}>
                       <Edit3 className="w-4 h-4 mr-2" />
                       {story.status === 'draft' ? 'Continue Writing' : 'Edit Content'}
                     </DropdownMenuItem>

@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import StoriesLibrary from '@/components/StoriesLibrary';
 import StoryForm from '@/components/StoryForm';
+import ChapterEditor from '@/components/ChapterEditor';
 import { LogOut, Settings, User, Feather } from 'lucide-react';
 import {
   DropdownMenu,
@@ -15,29 +16,39 @@ import {
 
 type View = 'library' | 'create' | 'edit' | 'write';
 
+interface StoryData {
+  id: string;
+  title: string;
+}
+
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const [currentView, setCurrentView] = useState<View>('library');
   const [selectedStoryId, setSelectedStoryId] = useState<string | undefined>();
+  const [selectedStoryData, setSelectedStoryData] = useState<StoryData | null>(null);
 
   const handleCreateStory = () => {
     setSelectedStoryId(undefined);
+    setSelectedStoryData(null);
     setCurrentView('create');
   };
 
   const handleEditStory = (storyId: string) => {
     setSelectedStoryId(storyId);
+    setSelectedStoryData(null);
     setCurrentView('edit');
   };
 
-  const handleWriteStory = (storyId: string) => {
+  const handleWriteStory = (storyId: string, storyTitle: string) => {
     setSelectedStoryId(storyId);
+    setSelectedStoryData({ id: storyId, title: storyTitle });
     setCurrentView('write');
   };
 
   const handleBackToLibrary = () => {
     setCurrentView('library');
     setSelectedStoryId(undefined);
+    setSelectedStoryData(null);
   };
 
   const handleStorySaved = (storyId: string) => {
@@ -107,18 +118,12 @@ const Dashboard = () => {
           />
         )}
 
-        {currentView === 'write' && (
-          <div className="text-center py-16">
-            <h3 className="text-2xl font-serif font-bold text-sage-900 mb-4">
-              Chapter Editor Coming Soon
-            </h3>
-            <p className="text-sage-600 mb-8">
-              The rich text editor for writing chapters will be implemented next.
-            </p>
-            <Button onClick={handleBackToLibrary} className="bg-sage-600 hover:bg-sage-700">
-              Back to Library
-            </Button>
-          </div>
+        {currentView === 'write' && selectedStoryData && (
+          <ChapterEditor
+            storyId={selectedStoryData.id}
+            storyTitle={selectedStoryData.title}
+            onBack={handleBackToLibrary}
+          />
         )}
       </main>
     </div>
