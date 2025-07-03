@@ -125,7 +125,7 @@ const Auth = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-sage-600 rounded-full mb-4">
             <Feather className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-serif font-bold text-sage-900 mb-2">Quill & Ink</h1>
+          <h1 className="text-3xl font-serif font-bold text-sage-900 mb-2">Quillify</h1>
           <p className="text-sage-600">Your digital writing sanctuary</p>
         </div>
 

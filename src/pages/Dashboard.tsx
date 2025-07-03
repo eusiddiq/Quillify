@@ -55,7 +55,7 @@ const Dashboard = () => {
                 <Feather className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-serif font-bold text-sage-900">Quill & Ink</h1>
+                <h1 className="text-xl font-serif font-bold text-sage-900">Quillify</h1>
                 <p className="text-sm text-sage-600">Your digital writing sanctuary</p>
               </div>
             </div>
