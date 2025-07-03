@@ -157,6 +157,15 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
         {stories.map((story) => (
           <Card key={story.id} className="group hover:shadow-lg transition-all duration-200 border-sage-200 bg-white/80 backdrop-blur-sm">
             <CardHeader className="pb-3">
+              {story.cover_url && (
+                <div className="w-full h-32 mb-3 rounded-md overflow-hidden bg-sage-50">
+                  <img
+                    src={story.cover_url}
+                    alt={`Cover for ${story.title}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   <h3 className="font-serif font-semibold text-sage-900 line-clamp-2 mb-2">

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,6 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Save, X, Plus } from 'lucide-react';
 import { Database } from '@/integrations/supabase/types';
+import ImageUpload from './ImageUpload';
 
 type StoryCategory = Database['public']['Enums']['story_category'];
 type TargetAudience = Database['public']['Enums']['target_audience'];
@@ -65,6 +65,7 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [category, setCategory] = useState<StoryCategory | ''>('');
   const [targetAudience, setTargetAudience] = useState<TargetAudience>('adult_25_plus');
   const [language, setLanguage] = useState<StoryLanguage>('english');
@@ -92,6 +93,7 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
 
       setTitle(data.title || '');
       setDescription(data.description || '');
+      setCoverUrl(data.cover_url);
       setCategory(data.category || '');
       setTargetAudience(data.target_audience || 'adult_25_plus');
       setLanguage(data.language || 'english');
@@ -123,6 +125,7 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
       const storyData = {
         title: title.trim(),
         description: description.trim() || null,
+        cover_url: coverUrl,
         category: category || null,
         target_audience: targetAudience,
         language,
@@ -242,6 +245,12 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
               className="border-sage-200 focus:border-sage-400 mt-2"
             />
           </div>
+
+          <ImageUpload
+            currentImageUrl={coverUrl}
+            onImageUploaded={setCoverUrl}
+            onImageRemoved={() => setCoverUrl(null)}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
