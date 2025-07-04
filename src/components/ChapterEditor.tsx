@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -34,6 +33,8 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [chapterTitle, setChapterTitle] = useState('');
   const [chapterContent, setChapterContent] = useState('');
+  const [originalTitle, setOriginalTitle] = useState('');
+  const [originalContent, setOriginalContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
@@ -55,9 +56,16 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     }
   }, [selectedChapterId, chapters]);
 
-  // Auto-save functionality
+  // Auto-save functionality - only save if there are actual changes
   useEffect(() => {
     if (!selectedChapter) return;
+
+    // Check if there are actual changes from the original values
+    const hasChanges = 
+      chapterTitle !== originalTitle || 
+      chapterContent !== originalContent;
+
+    if (!hasChanges) return;
 
     if (autoSaveTimeoutRef.current) {
       clearTimeout(autoSaveTimeoutRef.current);
@@ -72,7 +80,7 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
         clearTimeout(autoSaveTimeoutRef.current);
       }
     };
-  }, [chapterTitle, chapterContent, selectedChapter]);
+  }, [chapterTitle, chapterContent, selectedChapter, originalTitle, originalContent]);
 
   const fetchChapters = async () => {
     setLoading(true);
@@ -114,6 +122,10 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
       if (error) throw error;
 
       setLastSaved(new Date());
+      
+      // Update the original values after successful save
+      setOriginalTitle(chapterTitle);
+      setOriginalContent(chapterContent);
       
       // Update the chapter in local state
       setChapters(prev => prev.map(ch => 
@@ -172,6 +184,9 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     setSelectedChapter(chapter);
     setChapterTitle(chapter.title);
     setChapterContent(chapter.content || '');
+    // Set original values to track changes
+    setOriginalTitle(chapter.title);
+    setOriginalContent(chapter.content || '');
     setLastSaved(null);
   };
 
@@ -194,6 +209,8 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
         setSelectedChapter(null);
         setChapterTitle('');
         setChapterContent('');
+        setOriginalTitle('');
+        setOriginalContent('');
       }
 
       toast({
