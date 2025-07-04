@@ -123,18 +123,18 @@ const ImageUpload = ({ currentImageUrl, onImageUploaded, onImageRemoved }: Image
       <Label className="text-sage-800 font-medium">Cover Image</Label>
       
       {currentImageUrl ? (
-        <div className="mt-2 relative">
-          <div className="relative w-full max-w-xs">
+        <div className="mt-2">
+          <div className="relative w-48 h-64 bg-sage-50 rounded-lg border border-sage-200 overflow-hidden">
             <img
               src={currentImageUrl}
               alt="Story cover"
-              className="w-full h-48 object-cover rounded-lg border border-sage-200"
+              className="w-full h-full object-contain"
             />
             <Button
               type="button"
               variant="destructive"
               size="sm"
-              className="absolute top-2 right-2"
+              className="absolute top-2 right-2 w-8 h-8 p-0"
               onClick={handleRemoveImage}
             >
               <X className="w-4 h-4" />
