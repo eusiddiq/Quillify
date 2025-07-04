@@ -46,6 +46,7 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     lastSaved,
     setLastSaved,
     manualSave,
+    saveBeforeSwitch,
   } = useAutoSave(
     selectedChapter,
     chapterTitle,
@@ -69,7 +70,12 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     }
   }, [selectedChapterId, chapters]);
 
-  const selectChapter = (chapter: Chapter) => {
+  const selectChapter = async (chapter: Chapter) => {
+    // Save current chapter before switching if there are changes
+    if (selectedChapter) {
+      await saveBeforeSwitch();
+    }
+
     setSelectedChapter(chapter);
     setChapterTitle(chapter.title);
     setChapterContent(chapter.content || '');
@@ -80,9 +86,19 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
   };
 
   const handleCreateChapter = async () => {
+    // Save current chapter before creating new one
+    if (selectedChapter) {
+      await saveBeforeSwitch();
+    }
+
     const newChapter = await createNewChapter();
     if (newChapter) {
-      selectChapter(newChapter);
+      setSelectedChapter(newChapter);
+      setChapterTitle(newChapter.title);
+      setChapterContent(newChapter.content || '');
+      setOriginalTitle(newChapter.title);
+      setOriginalContent(newChapter.content || '');
+      setLastSaved(null);
     }
   };
 

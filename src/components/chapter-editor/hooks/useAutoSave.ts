@@ -86,10 +86,36 @@ export const useAutoSave = (
     }
   };
 
+  const saveBeforeSwitch = async () => {
+    if (!selectedChapter) return;
+
+    // Check if there are unsaved changes
+    const hasChanges = 
+      chapterTitle !== originalTitle || 
+      chapterContent !== originalContent;
+
+    if (!hasChanges) return;
+
+    // Clear any pending auto-save
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+
+    setSaving(true);
+    try {
+      await updateChapter(selectedChapter.id, chapterTitle, chapterContent);
+    } catch (error) {
+      console.error('Save before switch error:', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return {
     saving,
     lastSaved,
     setLastSaved,
     manualSave,
+    saveBeforeSwitch,
   };
 };
