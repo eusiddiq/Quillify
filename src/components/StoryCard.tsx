@@ -30,7 +30,18 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
   };
 
   return (
-    <Card className="group border-sage-200 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:border-sage-300">
+    <Card className="group border-sage-200 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:border-sage-300 overflow-hidden">
+      {story.cover_url && (
+        <div className="relative h-48 w-full overflow-hidden">
+          <img
+            src={story.cover_url}
+            alt={`${story.title} cover`}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+      )}
+      
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
@@ -45,15 +56,6 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
               )}
             </div>
           </div>
-          {story.cover_url && (
-            <div className="ml-3 flex-shrink-0">
-              <img
-                src={story.cover_url}
-                alt={`${story.title} cover`}
-                className="w-12 h-16 object-cover rounded border border-sage-200"
-              />
-            </div>
-          )}
         </div>
       </CardHeader>
 
