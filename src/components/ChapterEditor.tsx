@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ChapterEditorHeader from './chapter-editor/ChapterEditorHeader';
 import ChaptersList from './chapter-editor/ChaptersList';
@@ -30,6 +31,9 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
   const [chapterContent, setChapterContent] = useState('');
   const [originalTitle, setOriginalTitle] = useState('');
   const [originalContent, setOriginalContent] = useState('');
+  
+  // Track if we've already handled the initial chapter selection
+  const hasInitiallySelected = useRef(false);
 
   const {
     chapters,
@@ -59,12 +63,13 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     fetchChapters();
   }, [storyId]);
 
-  // Auto-select the chapter if selectedChapterId is provided
+  // Auto-select the chapter if selectedChapterId is provided, but only once
   useEffect(() => {
-    if (selectedChapterId && chapters.length > 0) {
+    if (selectedChapterId && chapters.length > 0 && !hasInitiallySelected.current) {
       const targetChapter = chapters.find(ch => ch.id === selectedChapterId);
       if (targetChapter) {
         selectChapter(targetChapter);
+        hasInitiallySelected.current = true;
       }
     }
   }, [selectedChapterId, chapters]);
@@ -99,6 +104,8 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
       setOriginalTitle(newChapter.title);
       setOriginalContent(newChapter.content || '');
       setLastSaved(null);
+      // Mark that we've handled initial selection to prevent auto-selection interference
+      hasInitiallySelected.current = true;
     }
   };
 
