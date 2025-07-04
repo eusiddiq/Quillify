@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +9,6 @@ interface Story {
   title: string;
   description: string | null;
   cover_url: string | null;
-  status: 'draft' | 'published';
   category: string | null;
   updated_at: string;
   created_at: string;
@@ -32,13 +30,13 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
   return (
     <Card className="group border-sage-200 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:border-sage-300 overflow-hidden">
       {story.cover_url && (
-        <div className="relative h-48 w-full overflow-hidden">
+        <div className="relative h-48 w-full overflow-hidden bg-sage-50">
           <img
             src={story.cover_url}
             alt={`${story.title} cover`}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
         </div>
       )}
       
