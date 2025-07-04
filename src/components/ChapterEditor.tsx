@@ -238,17 +238,18 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex items-center gap-4 mb-8">
+      <div className="mb-8">
         <Button 
           variant="ghost" 
           onClick={onBack}
-          className="text-sage-600 hover:text-sage-800"
+          className="text-sage-600 hover:text-sage-800 mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Library
         </Button>
-        <div>
-          <h1 className="text-3xl font-serif font-bold text-sage-900">
+        
+        <div className="text-center">
+          <h1 className="text-3xl font-serif font-bold text-sage-900 mb-2">
             {storyTitle}
           </h1>
           <p className="text-sage-600">Chapter Editor</p>
