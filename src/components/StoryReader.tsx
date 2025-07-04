@@ -157,35 +157,9 @@ const StoryReader = ({ storyId, onBack }: StoryReaderProps) => {
           {story.title}
         </h1>
         <p className="text-sage-600">Reading Mode</p>
-      </div>
-
-      {/* Chapter Navigation */}
-      <div className="flex items-center justify-between mb-6">
-        <Button
-          variant="outline"
-          onClick={goToPreviousChapter}
-          disabled={!canGoPrevious}
-          className="border-sage-300 text-sage-700 hover:bg-sage-50"
-        >
-          <ChevronLeft className="w-4 h-4 mr-2" />
-          Previous
-        </Button>
-
-        <div className="text-center">
-          <p className="text-sm text-sage-600">
-            Chapter {currentChapterIndex + 1} of {chapters.length}
-          </p>
-        </div>
-
-        <Button
-          variant="outline"
-          onClick={goToNextChapter}
-          disabled={!canGoNext}
-          className="border-sage-300 text-sage-700 hover:bg-sage-50"
-        >
-          Next
-          <ChevronRight className="w-4 h-4 ml-2" />
-        </Button>
+        <p className="text-sm text-sage-600 mt-1">
+          Chapter {currentChapterIndex + 1} of {chapters.length}
+        </p>
       </div>
 
       {/* Chapter Content */}
