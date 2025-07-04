@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -197,17 +198,18 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="flex items-center gap-4 mb-8">
+      <div className="mb-8">
         <Button 
           variant="ghost" 
           onClick={onBack}
-          className="text-sage-600 hover:text-sage-800"
+          className="text-sage-600 hover:text-sage-800 mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Library
         </Button>
-        <div>
-          <h1 className="text-3xl font-serif font-bold text-sage-900">
+        
+        <div className="text-center">
+          <h1 className="text-3xl font-serif font-bold text-sage-900 mb-2">
             {storyId ? 'Edit Story' : 'Create New Story'}
           </h1>
           <p className="text-sage-600">Set up your story details and metadata</p>
