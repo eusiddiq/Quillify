@@ -219,38 +219,44 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
           <CardTitle className="font-serif text-sage-900">Story Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div>
-            <Label htmlFor="title" className="text-sage-800 font-medium">
-              Title <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter your story title..."
-              className="border-sage-200 focus:border-sage-400 mt-2"
-            />
-          </div>
+          <div className="flex gap-6">
+            <div className="flex-shrink-0">
+              <ImageUpload
+                currentImageUrl={coverUrl}
+                onImageUploaded={setCoverUrl}
+                onImageRemoved={() => setCoverUrl(null)}
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="description" className="text-sage-800 font-medium">
-              Description
-            </Label>
-            <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's your story about? This helps readers discover your work..."
-              rows={4}
-              className="border-sage-200 focus:border-sage-400 mt-2"
-            />
-          </div>
+            <div className="flex-1 space-y-4">
+              <div>
+                <Label htmlFor="title" className="text-sage-800 font-medium">
+                  Title <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Enter your story title..."
+                  className="border-sage-200 focus:border-sage-400 mt-2"
+                />
+              </div>
 
-          <ImageUpload
-            currentImageUrl={coverUrl}
-            onImageUploaded={setCoverUrl}
-            onImageRemoved={() => setCoverUrl(null)}
-          />
+              <div>
+                <Label htmlFor="description" className="text-sage-800 font-medium">
+                  Description
+                </Label>
+                <Textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="What's your story about? This helps readers discover your work..."
+                  rows={4}
+                  className="border-sage-200 focus:border-sage-400 mt-2"
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
