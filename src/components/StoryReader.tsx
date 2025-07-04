@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Clock, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 interface Chapter {
   id: string;
   title: string;
@@ -15,6 +16,7 @@ interface Chapter {
   created_at: string;
   updated_at: string;
 }
+
 interface Story {
   id: string;
   title: string;
@@ -23,10 +25,12 @@ interface Story {
   category: string | null;
   updated_at: string;
 }
+
 interface StoryReaderProps {
   storyId: string;
   onBack: () => void;
 }
+
 const StoryReader = ({
   storyId,
   onBack
@@ -41,14 +45,17 @@ const StoryReader = ({
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (storyId) {
       fetchStoryAndChapters();
     }
   }, [storyId]);
+
   const handleChapterSelect = (chapterIndex: string) => {
     setCurrentChapterIndex(parseInt(chapterIndex));
   };
+
   const fetchStoryAndChapters = async () => {
     try {
       // Fetch story details
@@ -79,23 +86,28 @@ const StoryReader = ({
       setLoading(false);
     }
   };
+
   const currentChapter = chapters[currentChapterIndex];
   const canGoPrevious = currentChapterIndex > 0;
   const canGoNext = currentChapterIndex < chapters.length - 1;
+
   const goToPreviousChapter = () => {
     if (canGoPrevious) {
       setCurrentChapterIndex(currentChapterIndex - 1);
     }
   };
+
   const goToNextChapter = () => {
     if (canGoNext) {
       setCurrentChapterIndex(currentChapterIndex + 1);
     }
   };
+
   const getWordCount = (text: string) => {
     if (!text || !text.trim()) return 0;
     return text.trim().split(/\s+/).length;
   };
+
   if (loading) {
     return <div className="max-w-4xl mx-auto">
         <div className="text-center py-16">
@@ -104,6 +116,7 @@ const StoryReader = ({
         </div>
       </div>;
   }
+
   if (!story || chapters.length === 0) {
     return <div className="max-w-4xl mx-auto">
         <Button variant="ghost" onClick={onBack} className="text-sage-600 hover:text-sage-800 mb-6">
@@ -126,6 +139,7 @@ const StoryReader = ({
         </Card>
       </div>;
   }
+
   return <div className="max-w-4xl mx-auto">
       <Button variant="ghost" onClick={onBack} className="text-sage-600 hover:text-sage-800 mb-6">
         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -136,7 +150,7 @@ const StoryReader = ({
       <div className="flex items-start gap-6 mb-8">
         {/* Book Cover */}
         <div className="flex-shrink-0">
-          {story.cover_url ? <img src={story.cover_url} alt={`${story.title} cover`} className="w-24 h-32 object-cover border border-sage-200 shadow-sm" /> : <div className="w-24 h-32 bg-sage-100 rounded-lg border border-sage-200 flex items-center justify-center">
+          {story.cover_url ? <img src={story.cover_url} alt={`${story.title} cover`} className="w-24 h-32 object-contain border border-sage-200 shadow-sm bg-sage-50" /> : <div className="w-24 h-32 bg-sage-100 rounded-lg border border-sage-200 flex items-center justify-center">
               <BookOpen className="w-8 h-8 text-sage-400" />
             </div>}
         </div>
@@ -208,4 +222,5 @@ const StoryReader = ({
       </div>
     </div>;
 };
+
 export default StoryReader;
