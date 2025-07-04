@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, BookOpen, Clock, Trash2, Edit3, Eye } from 'lucide-react';
+import { Plus, BookOpen, Clock, Trash2, Edit3 } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Story {
@@ -202,19 +203,20 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
               <div className="flex items-center gap-2">
                 <Button
                   size="sm"
-                  onClick={() => onWriteStory(story.id, story.title)}
+                  onClick={() => onEditStory(story.id)}
                   className="bg-sage-600 hover:bg-sage-700 flex-1"
                 >
                   <Edit3 className="w-3 h-3 mr-1" />
-                  {story.status === 'draft' ? 'Continue' : 'Edit'}
+                  Edit Story
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onEditStory(story.id)}
+                  onClick={() => onWriteStory(story.id, story.title)}
                   className="border-sage-300 text-sage-600 hover:bg-sage-50"
                 >
-                  <Eye className="w-3 h-3" />
+                  <BookOpen className="w-3 h-3 mr-1" />
+                  Write
                 </Button>
                 <Button
                   size="sm"

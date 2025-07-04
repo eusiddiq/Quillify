@@ -1,9 +1,9 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import StoriesLibrary from '@/components/StoriesLibrary';
 import StoryForm from '@/components/StoryForm';
+import StoryEditor from '@/components/StoryEditor';
 import ChapterEditor from '@/components/ChapterEditor';
 import { LogOut, Settings, User, Feather } from 'lucide-react';
 import {
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-type View = 'library' | 'create' | 'edit' | 'write';
+type View = 'library' | 'create' | 'editor' | 'write';
 
 interface StoryData {
   id: string;
@@ -36,7 +36,7 @@ const Dashboard = () => {
   const handleEditStory = (storyId: string) => {
     setSelectedStoryId(storyId);
     setSelectedStoryData(null);
-    setCurrentView('edit');
+    setCurrentView('editor');
   };
 
   const handleWriteStory = (storyId: string, storyTitle: string) => {
@@ -110,11 +110,18 @@ const Dashboard = () => {
           />
         )}
 
-        {(currentView === 'create' || currentView === 'edit') && (
+        {currentView === 'create' && (
           <StoryForm
             storyId={selectedStoryId}
             onBack={handleBackToLibrary}
             onSave={handleStorySaved}
+          />
+        )}
+
+        {currentView === 'editor' && selectedStoryId && (
+          <StoryEditor
+            storyId={selectedStoryId}
+            onBack={handleBackToLibrary}
           />
         )}
 
