@@ -322,7 +322,17 @@ const StoryEditor = ({ storyId, onBack, onEditChapter, defaultTab = 'details' }:
         <TabsContent value="details">
           <Card className="border-sage-200 bg-white/80 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="font-serif text-sage-900">Story Information</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="font-serif text-sage-900">Story Information</CardTitle>
+                <Button
+                  onClick={handleSaveStory}
+                  disabled={loading || !title.trim()}
+                  className="bg-sage-600 hover:bg-sage-700"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  {loading ? 'Saving...' : 'Update Story'}
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex gap-6">
@@ -464,17 +474,6 @@ const StoryEditor = ({ storyId, onBack, onEditChapter, defaultTab = 'details' }:
                   checked={isMature}
                   onCheckedChange={setIsMature}
                 />
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <Button
-                  onClick={handleSaveStory}
-                  disabled={loading || !title.trim()}
-                  className="bg-sage-600 hover:bg-sage-700"
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  {loading ? 'Saving...' : 'Update Story'}
-                </Button>
               </div>
             </CardContent>
           </Card>
