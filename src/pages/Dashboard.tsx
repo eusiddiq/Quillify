@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -122,6 +123,7 @@ const Dashboard = () => {
           <StoryEditor
             storyId={selectedStoryId}
             onBack={handleBackToLibrary}
+            onEditChapter={handleWriteStory}
           />
         )}
 

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -33,6 +32,7 @@ interface Chapter {
 interface StoryEditorProps {
   storyId: string;
   onBack: () => void;
+  onEditChapter?: (storyId: string, storyTitle: string) => void;
 }
 
 const categories: { value: StoryCategory; label: string }[] = [
@@ -69,7 +69,7 @@ const languages: { value: StoryLanguage; label: string }[] = [
   { value: 'arabic', label: 'Arabic' },
 ];
 
-const StoryEditor = ({ storyId, onBack }: StoryEditorProps) => {
+const StoryEditor = ({ storyId, onBack, onEditChapter }: StoryEditorProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -537,6 +537,7 @@ const StoryEditor = ({ storyId, onBack }: StoryEditorProps) => {
                         <Button
                           size="sm"
                           variant="outline"
+                          onClick={() => onEditChapter && onEditChapter(storyId, title)}
                           className="border-sage-300 text-sage-700 hover:bg-sage-50"
                         >
                           <Edit3 className="w-3 h-3 mr-1" />
