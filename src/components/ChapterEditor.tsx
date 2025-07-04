@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -22,10 +21,11 @@ interface Chapter {
 interface ChapterEditorProps {
   storyId: string;
   storyTitle: string;
+  selectedChapterId?: string;
   onBack: () => void;
 }
 
-const ChapterEditor = ({ storyId, storyTitle, onBack }: ChapterEditorProps) => {
+const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: ChapterEditorProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -43,6 +43,16 @@ const ChapterEditor = ({ storyId, storyTitle, onBack }: ChapterEditorProps) => {
   useEffect(() => {
     fetchChapters();
   }, [storyId]);
+
+  // New useEffect to auto-select the chapter if selectedChapterId is provided
+  useEffect(() => {
+    if (selectedChapterId && chapters.length > 0) {
+      const targetChapter = chapters.find(ch => ch.id === selectedChapterId);
+      if (targetChapter) {
+        selectChapter(targetChapter);
+      }
+    }
+  }, [selectedChapterId, chapters]);
 
   // Auto-save functionality
   useEffect(() => {

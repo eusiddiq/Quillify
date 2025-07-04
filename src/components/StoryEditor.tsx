@@ -32,7 +32,7 @@ interface Chapter {
 interface StoryEditorProps {
   storyId: string;
   onBack: () => void;
-  onEditChapter?: (storyId: string, storyTitle: string) => void;
+  onEditChapter?: (storyId: string, storyTitle: string, chapterId?: string) => void;
 }
 
 const categories: { value: StoryCategory; label: string }[] = [
@@ -537,7 +537,7 @@ const StoryEditor = ({ storyId, onBack, onEditChapter }: StoryEditorProps) => {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => onEditChapter && onEditChapter(storyId, title)}
+                          onClick={() => onEditChapter && onEditChapter(storyId, title, chapter.id)}
                           className="border-sage-300 text-sage-700 hover:bg-sage-50"
                         >
                           <Edit3 className="w-3 h-3 mr-1" />

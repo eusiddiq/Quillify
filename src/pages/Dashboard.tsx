@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -20,6 +19,7 @@ type View = 'library' | 'create' | 'editor' | 'write';
 interface StoryData {
   id: string;
   title: string;
+  selectedChapterId?: string;
 }
 
 const Dashboard = () => {
@@ -40,9 +40,9 @@ const Dashboard = () => {
     setCurrentView('editor');
   };
 
-  const handleWriteStory = (storyId: string, storyTitle: string) => {
+  const handleWriteStory = (storyId: string, storyTitle: string, chapterId?: string) => {
     setSelectedStoryId(storyId);
-    setSelectedStoryData({ id: storyId, title: storyTitle });
+    setSelectedStoryData({ id: storyId, title: storyTitle, selectedChapterId: chapterId });
     setCurrentView('write');
   };
 
@@ -131,6 +131,7 @@ const Dashboard = () => {
           <ChapterEditor
             storyId={selectedStoryData.id}
             storyTitle={selectedStoryData.title}
+            selectedChapterId={selectedStoryData.selectedChapterId}
             onBack={handleBackToLibrary}
           />
         )}
