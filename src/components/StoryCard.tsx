@@ -38,15 +38,6 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
               {story.title}
             </h3>
             <div className="flex items-center gap-2 mb-2">
-              <Badge 
-                variant={story.status === 'published' ? 'default' : 'secondary'}
-                className={story.status === 'published' 
-                  ? 'bg-sage-600 hover:bg-sage-700' 
-                  : 'bg-sage-100 text-sage-700 hover:bg-sage-200'
-                }
-              >
-                {story.status}
-              </Badge>
               {story.category && (
                 <Badge variant="outline" className="border-sage-300 text-sage-600">
                   {formatCategory(story.category)}
