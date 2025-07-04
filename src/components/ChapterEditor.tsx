@@ -1,8 +1,8 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ChapterEditorHeader from './chapter-editor/ChapterEditorHeader';
 import ChapterContentEditor from './chapter-editor/ChapterContentEditor';
+import ChapterEditorSkeleton from './skeletons/ChapterEditorSkeleton';
 import { useChapterOperations } from './chapter-editor/hooks/useChapterOperations';
 import { useAutoSave } from './chapter-editor/hooks/useAutoSave';
 
@@ -30,6 +30,7 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
   const [chapterContent, setChapterContent] = useState('');
   const [originalTitle, setOriginalTitle] = useState('');
   const [originalContent, setOriginalContent] = useState('');
+  const [initialLoading, setInitialLoading] = useState(true);
   
   // Track if we've already handled the initial chapter selection
   const hasInitiallySelected = useRef(false);
@@ -59,19 +60,19 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
   );
 
   useEffect(() => {
-    fetchChapters();
+    fetchChapters().finally(() => setInitialLoading(false));
   }, [storyId]);
 
   // Auto-select the chapter if selectedChapterId is provided, but only once
   useEffect(() => {
-    if (selectedChapterId && chapters.length > 0 && !hasInitiallySelected.current) {
+    if (selectedChapterId && chapters.length > 0 && !hasInitiallySelected.current && !initialLoading) {
       const targetChapter = chapters.find(ch => ch.id === selectedChapterId);
       if (targetChapter) {
         selectChapter(targetChapter);
         hasInitiallySelected.current = true;
       }
     }
-  }, [selectedChapterId, chapters]);
+  }, [selectedChapterId, chapters, initialLoading]);
 
   const selectChapter = async (chapter: Chapter) => {
     // Save current chapter before switching if there are changes
@@ -118,6 +119,18 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
       setOriginalContent('');
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="max-w-7xl mx-auto">
+        <ChapterEditorHeader 
+          storyTitle={storyTitle}
+          onBack={onBack}
+        />
+        <ChapterEditorSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto">
