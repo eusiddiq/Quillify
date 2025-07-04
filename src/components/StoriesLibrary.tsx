@@ -5,14 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, MoreVertical, BookOpen, Clock, Trash2, Edit3, Eye } from 'lucide-react';
+import { Plus, BookOpen, Clock, Trash2, Edit3, Eye } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Story {
@@ -191,34 +185,6 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
                     )}
                   </div>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onWriteStory(story.id, story.title)}>
-                      <Edit3 className="w-4 h-4 mr-2" />
-                      {story.status === 'draft' ? 'Continue Writing' : 'Edit Content'}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onEditStory(story.id)}>
-                      <Eye className="w-4 h-4 mr-2" />
-                      View Details
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => deleteStory(story.id, story.title)}
-                      className="text-red-600 focus:text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
               </div>
             </CardHeader>
             <CardContent>
@@ -227,9 +193,37 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
                   {story.description}
                 </p>
               )}
-              <div className="flex items-center text-xs text-sage-500">
+              <div className="flex items-center text-xs text-sage-500 mb-4">
                 <Clock className="w-3 h-3 mr-1" />
                 Updated {format(new Date(story.updated_at), 'MMM d, yyyy')}
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => onWriteStory(story.id, story.title)}
+                  className="bg-sage-600 hover:bg-sage-700 flex-1"
+                >
+                  <Edit3 className="w-3 h-3 mr-1" />
+                  {story.status === 'draft' ? 'Continue' : 'Edit'}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onEditStory(story.id)}
+                  className="border-sage-300 text-sage-600 hover:bg-sage-50"
+                >
+                  <Eye className="w-3 h-3" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => deleteStory(story.id, story.title)}
+                  className="border-red-300 text-red-600 hover:bg-red-50"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
               </div>
             </CardContent>
           </Card>
