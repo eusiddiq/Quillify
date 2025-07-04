@@ -43,6 +43,14 @@ const ChapterContentEditor = ({
 }: ChapterContentEditorProps) => {
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
+  // Calculate word count
+  const getWordCount = (text: string) => {
+    if (!text.trim()) return 0;
+    return text.trim().split(/\s+/).length;
+  };
+
+  const wordCount = getWordCount(chapterContent);
+
   if (!selectedChapter) {
     return (
       <Card className="border-sage-200 bg-white/80 backdrop-blur-sm">
@@ -125,7 +133,7 @@ const ChapterContentEditor = ({
           style={{ minHeight: '500px' }}
         />
         <p className="text-xs text-sage-500 mt-2">
-          Auto-saves every 2 seconds while typing
+          {wordCount} {wordCount === 1 ? 'word' : 'words'}
         </p>
       </CardContent>
     </Card>
