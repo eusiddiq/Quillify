@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -304,20 +305,30 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
           {selectedChapter ? (
             <Card className="border-sage-200 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <Label htmlFor="chapter-title" className="text-sage-800 font-medium">
-                      Chapter Title
-                    </Label>
-                    <Input
-                      id="chapter-title"
-                      value={chapterTitle}
-                      onChange={(e) => setChapterTitle(e.target.value)}
-                      placeholder="Enter chapter title..."
-                      className="border-sage-200 focus:border-sage-400 mt-2"
-                    />
+                <div className="space-y-4">
+                  <div className="flex items-end gap-4">
+                    <div className="flex-1">
+                      <Label htmlFor="chapter-title" className="text-sage-800 font-medium">
+                        Chapter Title
+                      </Label>
+                      <Input
+                        id="chapter-title"
+                        value={chapterTitle}
+                        onChange={(e) => setChapterTitle(e.target.value)}
+                        placeholder="Enter chapter title..."
+                        className="border-sage-200 focus:border-sage-400 mt-2"
+                      />
+                    </div>
+                    <Button
+                      onClick={manualSave}
+                      disabled={saving}
+                      className="bg-sage-600 hover:bg-sage-700"
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      Save
+                    </Button>
                   </div>
-                  <div className="flex items-center gap-3 ml-4">
+                  <div className="flex items-center gap-3">
                     {saving && (
                       <div className="flex items-center gap-2 text-sage-600">
                         <Clock className="w-4 h-4 animate-spin" />
@@ -329,14 +340,6 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
                         Saved {format(lastSaved, 'HH:mm')}
                       </span>
                     )}
-                    <Button
-                      onClick={manualSave}
-                      disabled={saving}
-                      className="bg-sage-600 hover:bg-sage-700"
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      Save
-                    </Button>
                   </div>
                 </div>
               </CardHeader>
