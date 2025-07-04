@@ -68,17 +68,19 @@ const ChaptersList = ({
                 <h4 className="font-medium text-sage-900 truncate">
                   {chapter.title}
                 </h4>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteChapter(chapter.id, chapter.title);
-                  }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-800"
-                >
-                  <Trash className="w-4 h-4" />
-                </Button>
+                <div className="flex items-center">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteChapter(chapter.id, chapter.title);
+                    }}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-800"
+                  >
+                    <Trash className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
               <p className="text-xs text-sage-500 mt-1">
                 {format(new Date(chapter.updated_at), 'MMM d, yyyy')}
