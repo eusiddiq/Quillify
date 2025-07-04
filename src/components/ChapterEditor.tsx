@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ChapterEditorHeader from './chapter-editor/ChapterEditorHeader';
@@ -93,6 +92,7 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
 
     const newChapter = await createNewChapter();
     if (newChapter) {
+      // Directly set the new chapter without triggering save logic
       setSelectedChapter(newChapter);
       setChapterTitle(newChapter.title);
       setChapterContent(newChapter.content || '');
