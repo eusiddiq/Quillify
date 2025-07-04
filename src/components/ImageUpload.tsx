@@ -124,7 +124,7 @@ const ImageUpload = ({ currentImageUrl, onImageUploaded, onImageRemoved }: Image
       
       {currentImageUrl ? (
         <div className="mt-2">
-          <div className="relative w-48 h-64 bg-sage-50 rounded-lg border border-sage-200 overflow-hidden">
+          <div className="group relative w-48 h-64 bg-sage-50 rounded-lg border border-sage-200 overflow-hidden">
             <img
               src={currentImageUrl}
               alt="Story cover"
@@ -134,7 +134,7 @@ const ImageUpload = ({ currentImageUrl, onImageUploaded, onImageRemoved }: Image
               type="button"
               variant="destructive"
               size="sm"
-              className="absolute top-2 right-2 w-8 h-8 p-0"
+              className="absolute top-2 right-2 w-8 h-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               onClick={handleRemoveImage}
             >
               <X className="w-4 h-4" />
