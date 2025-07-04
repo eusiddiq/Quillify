@@ -15,6 +15,7 @@ import { ArrowLeft, Save, X, Plus, BookOpen, Trash2, Edit3, Clock } from 'lucide
 import { Database } from '@/integrations/supabase/types';
 import { format } from 'date-fns';
 import ImageUpload from './ImageUpload';
+import StoryEditorSkeleton from './skeletons/StoryEditorSkeleton';
 
 type StoryCategory = Database['public']['Enums']['story_category'];
 type TargetAudience = Database['public']['Enums']['target_audience'];
@@ -75,7 +76,7 @@ const StoryEditor = ({ storyId, onBack, onEditChapter, defaultTab = 'details' }:
   const { toast } = useToast();
   
   // Story details state
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
@@ -122,6 +123,8 @@ const StoryEditor = ({ storyId, onBack, onEditChapter, defaultTab = 'details' }:
         title: "Error",
         description: "Failed to load story details.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -281,6 +284,10 @@ const StoryEditor = ({ storyId, onBack, onEditChapter, defaultTab = 'details' }:
       });
     }
   };
+
+  if (loading) {
+    return <StoryEditorSkeleton />;
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
