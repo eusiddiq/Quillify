@@ -16,7 +16,7 @@ const ChapterEditorHeader = ({ storyTitle, onBack }: ChapterEditorHeaderProps) =
         className="text-sage-600 hover:text-sage-800 mb-4"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Library
+        Back to Story
       </Button>
       
       <div className="text-center">

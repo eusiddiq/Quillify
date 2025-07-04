@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -58,6 +57,11 @@ const Dashboard = () => {
     setCurrentView('library');
     setSelectedStoryId(undefined);
     setSelectedStoryData(null);
+  };
+
+  const handleBackToStoryEditor = () => {
+    setCurrentView('editor');
+    // Keep the selectedStoryId and selectedStoryData as they are
   };
 
   const handleStorySaved = (storyId: string) => {
@@ -141,7 +145,7 @@ const Dashboard = () => {
             storyId={selectedStoryData.id}
             storyTitle={selectedStoryData.title}
             selectedChapterId={selectedStoryData.selectedChapterId}
-            onBack={handleBackToLibrary}
+            onBack={handleBackToStoryEditor}
           />
         )}
 

@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ChapterEditorHeader from './chapter-editor/ChapterEditorHeader';
-import ChaptersList from './chapter-editor/ChaptersList';
 import ChapterContentEditor from './chapter-editor/ChapterContentEditor';
 import { useChapterOperations } from './chapter-editor/hooks/useChapterOperations';
 import { useAutoSave } from './chapter-editor/hooks/useAutoSave';
@@ -127,34 +126,19 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
         onBack={onBack}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Chapters Sidebar */}
-        <div className="lg:col-span-1">
-          <ChaptersList
-            chapters={chapters}
-            selectedChapter={selectedChapter}
-            loading={loading}
-            onSelectChapter={selectChapter}
-            onCreateChapter={handleCreateChapter}
-            onDeleteChapter={handleDeleteChapter}
-          />
-        </div>
-
-        {/* Editor */}
-        <div className="lg:col-span-3">
-          <ChapterContentEditor
-            selectedChapter={selectedChapter}
-            chapterTitle={chapterTitle}
-            chapterContent={chapterContent}
-            saving={saving}
-            lastSaved={lastSaved}
-            loading={loading}
-            onTitleChange={setChapterTitle}
-            onContentChange={setChapterContent}
-            onManualSave={manualSave}
-            onCreateChapter={handleCreateChapter}
-          />
-        </div>
+      <div className="max-w-4xl mx-auto">
+        <ChapterContentEditor
+          selectedChapter={selectedChapter}
+          chapterTitle={chapterTitle}
+          chapterContent={chapterContent}
+          saving={saving}
+          lastSaved={lastSaved}
+          loading={loading}
+          onTitleChange={setChapterTitle}
+          onContentChange={setChapterContent}
+          onManualSave={manualSave}
+          onCreateChapter={handleCreateChapter}
+        />
       </div>
     </div>
   );
