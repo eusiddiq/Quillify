@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -158,12 +158,14 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
           <Card key={story.id} className="group hover:shadow-lg transition-all duration-200 border-sage-200 bg-white/80 backdrop-blur-sm">
             <CardHeader className="pb-3">
               {story.cover_url && (
-                <div className="w-full h-32 mb-3 rounded-md overflow-hidden bg-sage-50">
-                  <img
-                    src={story.cover_url}
-                    alt={`Cover for ${story.title}`}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-full mb-3 rounded-md overflow-hidden bg-sage-50">
+                  <AspectRatio ratio={3/4}>
+                    <img
+                      src={story.cover_url}
+                      alt={`Cover for ${story.title}`}
+                      className="w-full h-full object-contain"
+                    />
+                  </AspectRatio>
                 </div>
               )}
               <div className="flex items-start justify-between">
