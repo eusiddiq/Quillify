@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -208,15 +207,6 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onWriteStory }: StoriesLib
                 >
                   <Edit3 className="w-3 h-3 mr-1" />
                   Edit Story
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onWriteStory(story.id, story.title)}
-                  className="border-sage-300 text-sage-600 hover:bg-sage-50"
-                >
-                  <BookOpen className="w-3 h-3 mr-1" />
-                  Write
                 </Button>
                 <Button
                   size="sm"
