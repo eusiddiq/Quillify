@@ -366,7 +366,7 @@ const ChapterEditor = ({ storyId, storyTitle, onBack }: ChapterEditorProps) => {
                     className="bg-sage-600 hover:bg-sage-700"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Create First Chapter
+                    Create Chapter
                   </Button>
                 </div>
               </CardContent>
