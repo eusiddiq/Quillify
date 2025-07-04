@@ -57,7 +57,7 @@ const ChaptersList = ({
           chapters.map((chapter) => (
             <div
               key={chapter.id}
-              className={`p-3 rounded-lg border cursor-pointer transition-all ${
+              className={`group p-3 rounded-lg border cursor-pointer transition-all ${
                 selectedChapter?.id === chapter.id
                   ? 'border-sage-400 bg-sage-50'
                   : 'border-sage-200 hover:border-sage-300 hover:bg-sage-25'
