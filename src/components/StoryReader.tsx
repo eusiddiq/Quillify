@@ -1,12 +1,18 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Clock } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Clock, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface Chapter {
   id: string;
@@ -45,6 +51,10 @@ const StoryReader = ({ storyId, onBack }: StoryReaderProps) => {
       fetchStoryAndChapters();
     }
   }, [storyId]);
+
+  const handleChapterSelect = (chapterIndex: string) => {
+    setCurrentChapterIndex(parseInt(chapterIndex));
+  };
 
   const fetchStoryAndChapters = async () => {
     try {
@@ -151,15 +161,47 @@ const StoryReader = ({ storyId, onBack }: StoryReaderProps) => {
         Back to Library
       </Button>
 
-      {/* Story Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-serif font-bold text-sage-900 mb-2">
-          {story.title}
-        </h1>
-        <p className="text-sage-600">Reading Mode</p>
-        <p className="text-sm text-sage-600 mt-1">
-          Chapter {currentChapterIndex + 1} of {chapters.length}
-        </p>
+      {/* Story Header with Cover and Chapter Selector */}
+      <div className="flex items-start gap-6 mb-8">
+        {/* Book Cover */}
+        <div className="flex-shrink-0">
+          {story.cover_url ? (
+            <img
+              src={story.cover_url}
+              alt={`${story.title} cover`}
+              className="w-24 h-32 object-cover rounded-lg border border-sage-200 shadow-sm"
+            />
+          ) : (
+            <div className="w-24 h-32 bg-sage-100 rounded-lg border border-sage-200 flex items-center justify-center">
+              <BookOpen className="w-8 h-8 text-sage-400" />
+            </div>
+          )}
+        </div>
+
+        {/* Title and Chapter Selector */}
+        <div className="flex-1 min-w-0">
+          <h1 className="text-3xl font-serif font-bold text-sage-900 mb-2">
+            {story.title}
+          </h1>
+          <p className="text-sage-600 mb-4">Reading Mode</p>
+          
+          {/* Chapter Selector */}
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-sage-700 font-medium">Chapter:</span>
+            <Select value={currentChapterIndex.toString()} onValueChange={handleChapterSelect}>
+              <SelectTrigger className="w-64 border-sage-300">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-sage-200">
+                {chapters.map((chapter, index) => (
+                  <SelectItem key={chapter.id} value={index.toString()}>
+                    Chapter {index + 1}: {chapter.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
 
       {/* Chapter Content */}
