@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Plus } from 'lucide-react';
+import { BookOpen, Plus, Trash } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Chapter {
@@ -77,7 +77,7 @@ const ChaptersList = ({
                   }}
                   className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-800"
                 >
-                  ×
+                  <Trash className="w-4 h-4" />
                 </Button>
               </div>
               <p className="text-xs text-sage-500 mt-1">
