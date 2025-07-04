@@ -28,6 +28,7 @@ const Dashboard = () => {
   const [currentView, setCurrentView] = useState<View>('library');
   const [selectedStoryId, setSelectedStoryId] = useState<string | undefined>();
   const [selectedStoryData, setSelectedStoryData] = useState<StoryData | null>(null);
+  const [storyEditorTab, setStoryEditorTab] = useState<string>('details');
 
   const handleCreateStory = () => {
     setSelectedStoryId(undefined);
@@ -57,16 +58,19 @@ const Dashboard = () => {
     setCurrentView('library');
     setSelectedStoryId(undefined);
     setSelectedStoryData(null);
+    setStoryEditorTab('details');
   };
 
   const handleBackToStoryEditor = () => {
     setCurrentView('editor');
+    setStoryEditorTab('chapters'); // Set to chapters tab when coming from chapter editor
     // Keep the selectedStoryId and selectedStoryData as they are
   };
 
   const handleStorySaved = (storyId: string) => {
     setSelectedStoryId(storyId);
     setCurrentView('library');
+    setStoryEditorTab('details');
   };
 
   return (
@@ -137,6 +141,7 @@ const Dashboard = () => {
             storyId={selectedStoryId}
             onBack={handleBackToLibrary}
             onEditChapter={handleWriteStory}
+            defaultTab={storyEditorTab}
           />
         )}
 

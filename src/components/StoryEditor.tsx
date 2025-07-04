@@ -33,6 +33,7 @@ interface StoryEditorProps {
   storyId: string;
   onBack: () => void;
   onEditChapter?: (storyId: string, storyTitle: string, chapterId?: string) => void;
+  defaultTab?: string;
 }
 
 const categories: { value: StoryCategory; label: string }[] = [
@@ -69,7 +70,7 @@ const languages: { value: StoryLanguage; label: string }[] = [
   { value: 'arabic', label: 'Arabic' },
 ];
 
-const StoryEditor = ({ storyId, onBack, onEditChapter }: StoryEditorProps) => {
+const StoryEditor = ({ storyId, onBack, onEditChapter, defaultTab = 'details' }: StoryEditorProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -299,7 +300,7 @@ const StoryEditor = ({ storyId, onBack, onEditChapter }: StoryEditorProps) => {
         <p className="text-sage-600">Edit your story details and manage chapters</p>
       </div>
 
-      <Tabs defaultValue="details" className="w-full">
+      <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-8">
           <TabsTrigger value="details" className="flex items-center gap-2">
             <Edit3 className="w-4 h-4" />
