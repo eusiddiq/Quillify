@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,9 +22,10 @@ interface StoriesLibraryProps {
   onCreateStory: () => void;
   onEditStory: (storyId: string) => void;
   onWriteStory: (storyId: string, storyTitle: string) => void;
+  onReadStory: (storyId: string) => void;
 }
 
-const StoriesLibrary = ({ onCreateStory, onEditStory }: StoriesLibraryProps) => {
+const StoriesLibrary = ({ onCreateStory, onEditStory, onReadStory }: StoriesLibraryProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [stories, setStories] = useState<Story[]>([]);
@@ -105,6 +105,7 @@ const StoriesLibrary = ({ onCreateStory, onEditStory }: StoriesLibraryProps) => 
             story={story}
             onEdit={onEditStory}
             onDelete={deleteStory}
+            onRead={onReadStory}
           />
         ))}
       </div>
