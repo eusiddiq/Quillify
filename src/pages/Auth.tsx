@@ -44,7 +44,7 @@ const Auth = () => {
           description: error.message || "Please check your credentials and try again.",
         });
       } else {
-        window.location.href = '/';
+        window.location.href = './';
       }
     } catch (error) {
       toast({
