@@ -14,6 +14,7 @@ interface Story {
   cover_url: string | null;
   status: 'draft' | 'published';
   category: string | null;
+  tags: string[] | null;
   updated_at: string;
   created_at: string;
 }
@@ -36,6 +37,20 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onReadStory }: StoriesLibr
       fetchStories();
     }
   }, [user]);
+
+  // Listen for hash changes to refresh stories when returning from editor
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash.includes('refresh')) {
+        fetchStories();
+        // Clean up the hash
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const fetchStories = async () => {
     try {

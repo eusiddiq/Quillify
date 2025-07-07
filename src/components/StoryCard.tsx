@@ -10,6 +10,7 @@ interface Story {
   description: string | null;
   cover_url: string | null;
   category: string | null;
+  tags: string[] | null;
   updated_at: string;
   created_at: string;
 }
@@ -46,10 +47,22 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
             <h3 className="font-serif font-semibold text-lg text-sage-900 truncate mb-1">
               {story.title}
             </h3>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
               {story.category && (
                 <Badge variant="outline" className="border-sage-300 text-sage-600">
                   {formatCategory(story.category)}
+                </Badge>
+              )}
+              {story.tags && story.tags.length > 0 && (
+                story.tags.slice(0, 3).map((tag) => (
+                  <Badge key={tag} variant="secondary" className="bg-sage-100 text-sage-700 text-xs">
+                    {tag}
+                  </Badge>
+                ))
+              )}
+              {story.tags && story.tags.length > 3 && (
+                <Badge variant="secondary" className="bg-sage-100 text-sage-700 text-xs">
+                  +{story.tags.length - 3}
                 </Badge>
               )}
             </div>

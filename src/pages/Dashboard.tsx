@@ -61,6 +61,8 @@ const Dashboard = () => {
     setSelectedStoryId(undefined);
     setSelectedStoryData(null);
     setStoryEditorTab('details');
+    // Force refresh of stories when returning to library
+    window.location.hash = `#refresh-${Date.now()}`;
   };
 
   const handleBackToStoryEditor = () => {
