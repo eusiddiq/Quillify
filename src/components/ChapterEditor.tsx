@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import ChapterEditorHeader from './chapter-editor/ChapterEditorHeader';
 import ChapterContentEditor from './chapter-editor/ChapterContentEditor';
 import ChapterEditorSkeleton from './skeletons/ChapterEditorSkeleton';
+import { FloatingSaveStatus } from '@/components/ui/floating-save-status';
 import { useChapterOperations } from './chapter-editor/hooks/useChapterOperations';
 import { useAutoSave } from './chapter-editor/hooks/useAutoSave';
 
@@ -153,6 +154,13 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
           onCreateChapter={handleCreateChapter}
         />
       </div>
+
+      {/* Floating Save Status */}
+      <FloatingSaveStatus
+        status={saving ? "saving" : lastSaved ? "saved" : "unsaved"}
+        lastSaved={lastSaved}
+        show={selectedChapter !== null}
+      />
     </div>
   );
 };

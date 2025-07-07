@@ -7,8 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Checkbox } from '@/components/ui/checkbox';
+import { FormField } from '@/components/ui/form-field';
 import { useToast } from '@/hooks/use-toast';
-import { Feather, Loader2 } from 'lucide-react';
+import { Feather } from 'lucide-react';
 
 const Auth = () => {
   const { signIn, signUp, resetPassword } = useAuth();
@@ -20,18 +21,73 @@ const Auth = () => {
   // Sign in form state
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [signInErrors, setSignInErrors] = useState<{email?: string, password?: string}>({});
   
   // Sign up form state
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [signUpErrors, setSignUpErrors] = useState<{email?: string, password?: string, displayName?: string}>({});
   
   // Reset password state
   const [resetEmail, setResetEmail] = useState('');
+  const [resetErrors, setResetErrors] = useState<{email?: string}>({});
   const [showReset, setShowReset] = useState(false);
+
+  // Validation functions
+  const validateEmail = (email: string) => {
+    if (!email) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Please enter a valid email address";
+    return "";
+  };
+
+  const validatePassword = (password: string) => {
+    if (!password) return "Password is required";
+    if (password.length < 6) return "Password must be at least 6 characters";
+    return "";
+  };
+
+  const validateDisplayName = (name: string) => {
+    if (!name) return "Display name is required";
+    if (name.length < 2) return "Display name must be at least 2 characters";
+    return "";
+  };
+
+  const validateSignInForm = () => {
+    const errors = {
+      email: validateEmail(signInEmail),
+      password: validatePassword(signInPassword),
+    };
+    setSignInErrors(errors);
+    return !errors.email && !errors.password;
+  };
+
+  const validateSignUpForm = () => {
+    const errors = {
+      displayName: validateDisplayName(displayName),
+      email: validateEmail(signUpEmail),
+      password: validatePassword(signUpPassword),
+    };
+    setSignUpErrors(errors);
+    return !errors.displayName && !errors.email && !errors.password;
+  };
+
+  const validateResetForm = () => {
+    const errors = {
+      email: validateEmail(resetEmail),
+    };
+    setResetErrors(errors);
+    return !errors.email;
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateSignInForm()) {
+      return;
+    }
+    
     setLoading(true);
     
     try {
@@ -59,6 +115,11 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateSignUpForm()) {
+      return;
+    }
+    
     setLoading(true);
     
     try {
@@ -89,6 +150,11 @@ const Auth = () => {
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateResetForm()) {
+      return;
+    }
+    
     setLoading(true);
     
     try {
@@ -151,10 +217,9 @@ const Auth = () => {
                 <div className="flex gap-2">
                   <Button 
                     type="submit" 
-                    disabled={loading}
+                    loading={loading}
                     className="flex-1 bg-sage-600 hover:bg-sage-700"
                   >
-                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     Send Reset Link
                   </Button>
                   <Button 
@@ -184,28 +249,42 @@ const Auth = () => {
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSignIn} className="space-y-4">
-                    <div>
-                      <Label htmlFor="signin-email">Email</Label>
-                      <Input
-                        id="signin-email"
-                        type="email"
-                        value={signInEmail}
-                        onChange={(e) => setSignInEmail(e.target.value)}
-                        required
-                        className="border-sage-200 focus:border-sage-400"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="signin-password">Password</Label>
-                      <Input
-                        id="signin-password"
-                        type="password"
-                        value={signInPassword}
-                        onChange={(e) => setSignInPassword(e.target.value)}
-                        required
-                        className="border-sage-200 focus:border-sage-400"
-                      />
-                    </div>
+                    <FormField
+                      label="Email"
+                      id="signin-email"
+                      required
+                      error={signInErrors.email}
+                      inputProps={{
+                        type: "email",
+                        value: signInEmail,
+                        onChange: (e) => {
+                          setSignInEmail(e.target.value);
+                          if (signInErrors.email) {
+                            setSignInErrors(prev => ({ ...prev, email: "" }));
+                          }
+                        },
+                        className: "border-sage-200 focus:border-sage-400",
+                        placeholder: "Enter your email address"
+                      }}
+                    />
+                    <FormField
+                      label="Password"
+                      id="signin-password"
+                      required
+                      error={signInErrors.password}
+                      inputProps={{
+                        type: "password",
+                        value: signInPassword,
+                        onChange: (e) => {
+                          setSignInPassword(e.target.value);
+                          if (signInErrors.password) {
+                            setSignInErrors(prev => ({ ...prev, password: "" }));
+                          }
+                        },
+                        className: "border-sage-200 focus:border-sage-400",
+                        placeholder: "Enter your password"
+                      }}
+                    />
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Checkbox 
@@ -225,10 +304,9 @@ const Auth = () => {
                     </div>
                     <Button 
                       type="submit" 
-                      disabled={loading}
+                      loading={loading}
                       className="w-full bg-sage-600 hover:bg-sage-700"
                     >
-                      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Sign In
                     </Button>
                   </form>
@@ -279,10 +357,9 @@ const Auth = () => {
                     </div>
                     <Button 
                       type="submit" 
-                      disabled={loading}
+                      loading={loading}
                       className="w-full bg-sage-600 hover:bg-sage-700"
                     >
-                      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Create Account
                     </Button>
                   </form>

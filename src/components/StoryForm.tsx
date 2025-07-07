@@ -365,11 +365,12 @@ const StoryForm = ({ storyId, onBack, onSave }: StoryFormProps) => {
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleSave}
-              disabled={loading || !title.trim()}
+              loading={loading}
+              disabled={!title.trim()}
               className="bg-sage-600 hover:bg-sage-700"
             >
               <Save className="w-4 h-4 mr-2" />
-              {loading ? 'Saving...' : (storyId ? 'Update Story' : 'Create Story')}
+              {storyId ? 'Update Story' : 'Create Story'}
             </Button>
             <Button
               variant="outline"

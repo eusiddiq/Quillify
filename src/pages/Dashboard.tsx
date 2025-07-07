@@ -6,6 +6,8 @@ import StoryForm from '@/components/StoryForm';
 import StoryEditor from '@/components/StoryEditor';
 import ChapterEditor from '@/components/ChapterEditor';
 import StoryReader from '@/components/StoryReader';
+import { KeyboardShortcuts, useKeyboardShortcuts } from '@/components/ui/keyboard-shortcuts';
+import { NavigationBreadcrumb } from '@/components/ui/navigation-breadcrumb';
 import { LogOut, Settings, User, Feather } from 'lucide-react';
 import {
   DropdownMenu,
@@ -73,6 +75,84 @@ const Dashboard = () => {
     setStoryEditorTab('details');
   };
 
+  // Define keyboard shortcuts for the dashboard
+  const shortcuts = [
+    {
+      key: ["Ctrl", "N"],
+      description: "Create new story",
+      category: "General",
+      action: handleCreateStory,
+    },
+    {
+      key: ["Ctrl", "L"],
+      description: "Go to library",
+      category: "Navigation", 
+      action: () => setCurrentView('library'),
+    },
+    {
+      key: ["Escape"],
+      description: "Go back/cancel",
+      category: "Navigation",
+      action: () => {
+        if (currentView !== 'library') {
+          setCurrentView('library');
+        }
+      },
+    },
+    {
+      key: ["?"],
+      description: "Show keyboard shortcuts",
+      category: "Help",
+    },
+  ];
+
+  const { triggered, KeyboardShortcutsComponent } = useKeyboardShortcuts(shortcuts);
+
+  // Generate breadcrumb items based on current view
+  const getBreadcrumbItems = () => {
+    const items = [];
+    
+    switch (currentView) {
+      case 'create':
+        items.push({ label: 'Create Story', current: true });
+        break;
+      case 'editor':
+        if (selectedStoryData) {
+          items.push(
+            { label: selectedStoryData.title, onClick: () => setCurrentView('editor'), current: true }
+          );
+        } else {
+          items.push({ label: 'Edit Story', current: true });
+        }
+        break;
+      case 'write':
+        if (selectedStoryData) {
+          items.push(
+            { label: selectedStoryData.title, onClick: () => setCurrentView('editor') },
+            { label: 'Write', current: true }
+          );
+        } else {
+          items.push({ label: 'Write', current: true });
+        }
+        break;
+      case 'read':
+        if (selectedStoryData) {
+          items.push(
+            { label: selectedStoryData.title, onClick: () => setCurrentView('editor') },
+            { label: 'Read', current: true }
+          );
+        } else {
+          items.push({ label: 'Read', current: true });
+        }
+        break;
+      default:
+        // Library view - no additional items needed
+        break;
+    }
+    
+    return items;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-sage-50 to-cream-100">
       <header className="bg-white/80 backdrop-blur-sm border-b border-sage-200 sticky top-0 z-10">
@@ -88,7 +168,10 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <DropdownMenu>
+            <div className="flex items-center gap-3">
+              <KeyboardShortcuts shortcuts={shortcuts} />
+              
+              <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 text-sage-700 hover:text-sage-900">
                   <User className="w-4 h-4" />
@@ -113,10 +196,24 @@ const Dashboard = () => {
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
       </header>
+
+      {/* Breadcrumb Navigation */}
+      {currentView !== 'library' && (
+        <div className="bg-white/60 backdrop-blur-sm border-b border-sage-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <NavigationBreadcrumb
+              items={getBreadcrumbItems()}
+              onHomeClick={() => setCurrentView('library')}
+              homeLabel="Library"
+            />
+          </div>
+        </div>
+      )}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {currentView === 'library' && (

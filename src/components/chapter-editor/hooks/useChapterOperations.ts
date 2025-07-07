@@ -12,7 +12,7 @@ interface Chapter {
   updated_at: string;
 }
 
-export const useChapterOperations = (storyId: string, user: any) => {
+export const useChapterOperations = (storyId: string, user: { id: string } | null) => {
   const { toast } = useToast();
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [loading, setLoading] = useState(false);

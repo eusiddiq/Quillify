@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Save, Clock, BookOpen, Plus } from 'lucide-react';
+import { SaveStatus } from '@/components/ui/save-status';
+import { Save, Clock, BookOpen, Plus, PenTool, Zap } from 'lucide-react';
 import { format } from 'date-fns';
 import { useRef } from 'react';
 
@@ -53,24 +54,51 @@ const ChapterContentEditor = ({
 
   if (!selectedChapter) {
     return (
-      <Card className="border-sage-200 bg-white/80 backdrop-blur-sm">
-        <CardContent className="flex items-center justify-center py-16">
-          <div className="text-center">
-            <BookOpen className="w-16 h-16 text-sage-400 mx-auto mb-4" />
-            <h3 className="text-xl font-serif font-semibold text-sage-900 mb-2">
+      <Card variant="elevated" className="border-sage-200 bg-white/80 backdrop-blur-sm">
+        <CardContent className="flex items-center justify-center py-20">
+          <div className="text-center max-w-md">
+            {/* Animated illustration */}
+            <div className="relative w-24 h-24 mx-auto mb-6">
+              <div className="absolute inset-0 bg-sage-100 rounded-full animate-pulse"></div>
+              <div className="absolute inset-2 bg-white rounded-full shadow-sm flex items-center justify-center">
+                <PenTool className="w-8 h-8 text-sage-500 animate-bounce" style={{ animationDuration: '2s' }} />
+              </div>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-sage-300 rounded-full animate-ping"></div>
+            </div>
+
+            <h3 className="text-2xl font-serif font-semibold text-sage-900 mb-3">
               Ready to Start Writing?
             </h3>
-            <p className="text-sage-600 mb-6">
-              Select a chapter from the sidebar or create a new one to begin writing your story.
+            <p className="text-sage-600 mb-6 leading-relaxed">
+              Select a chapter from the sidebar or create your first chapter to begin crafting your story.
             </p>
-            <Button
-              onClick={onCreateChapter}
-              disabled={loading}
-              className="bg-sage-600 hover:bg-sage-700"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Create Chapter
-            </Button>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={onCreateChapter}
+                loading={loading}
+                size="lg"
+                className="bg-sage-600 hover:bg-sage-700"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create First Chapter
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-sage-300 text-sage-700 hover:bg-sage-50"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                Quick Start Tips
+              </Button>
+            </div>
+
+            {/* Writing prompt */}
+            <div className="mt-8 p-4 bg-sage-50 rounded-lg border border-sage-200">
+              <p className="text-sage-700 text-sm italic">
+                "Every chapter is a doorway to new possibilities. What will yours reveal?"
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -96,7 +124,7 @@ const ChapterContentEditor = ({
             </div>
             <Button
               onClick={onManualSave}
-              disabled={saving}
+              loading={saving}
               className="bg-sage-600 hover:bg-sage-700"
             >
               <Save className="w-4 h-4 mr-2" />
@@ -104,17 +132,12 @@ const ChapterContentEditor = ({
             </Button>
           </div>
           <div className="flex items-center gap-3">
-            {saving && (
-              <div className="flex items-center gap-2 text-sage-600">
-                <Clock className="w-4 h-4 animate-spin" />
-                <span className="text-sm">Saving...</span>
-              </div>
-            )}
-            {lastSaved && !saving && (
-              <span className="text-sm text-sage-500">
-                Saved {format(lastSaved, 'HH:mm')}
-              </span>
-            )}
+            <SaveStatus
+              status={saving ? "saving" : "saved"}
+              lastSaved={lastSaved}
+              autoHide={false}
+              showBadge={true}
+            />
           </div>
         </div>
       </CardHeader>
