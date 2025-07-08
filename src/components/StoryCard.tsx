@@ -1,8 +1,9 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, Clock, BookOpen } from 'lucide-react';
+import { Edit, Trash2, Clock, BookOpen, FileText } from 'lucide-react';
 import { format } from 'date-fns';
+import { countWords, formatWordCount } from '@/lib/wordCount';
 
 interface Story {
   id: string;
@@ -13,6 +14,7 @@ interface Story {
   tags: string[] | null;
   updated_at: string;
   created_at: string;
+  chapters?: { content: string | null }[];
 }
 
 interface StoryCardProps {
@@ -27,6 +29,15 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
     if (!category) return null;
     return category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
+
+  const getTotalWordCount = () => {
+    if (!story.chapters || story.chapters.length === 0) return 0;
+    return story.chapters.reduce((total, chapter) => {
+      return total + countWords(chapter.content);
+    }, 0);
+  };
+
+  const totalWords = getTotalWordCount();
 
   return (
     <Card className="group border-sage-200 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:border-sage-300 overflow-hidden">
@@ -80,11 +91,17 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
             No description available
           </p>
         )}
-        <div className="flex items-center gap-1 mt-3 text-xs text-sage-500">
-          <Clock className="w-3 h-3" />
-          <span>
-            Updated {format(new Date(story.updated_at), 'MMM d, yyyy')}
-          </span>
+        <div className="flex items-center justify-between mt-3 text-xs text-sage-500">
+          <div className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            <span>
+              Updated {format(new Date(story.updated_at), 'MMM d, yyyy')}
+            </span>
+          </div>
+          <div className="flex items-center gap-1">
+            <FileText className="w-3 h-3" />
+            <span>{formatWordCount(totalWords)}</span>
+          </div>
         </div>
       </CardContent>
 

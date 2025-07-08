@@ -17,6 +17,7 @@ interface Story {
   tags: string[] | null;
   updated_at: string;
   created_at: string;
+  chapters?: { content: string | null }[];
 }
 
 interface StoriesLibraryProps {
@@ -56,7 +57,12 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onReadStory }: StoriesLibr
     try {
       const { data, error } = await supabase
         .from('stories')
-        .select('*')
+        .select(`
+          *,
+          chapters (
+            content
+          )
+        `)
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
