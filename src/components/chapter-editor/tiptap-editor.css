@@ -91,3 +91,44 @@
 .ProseMirror hr {
   @apply border-t border-sage-300 my-6;
 }
+
+/* Reading mode specific styles */
+.ProseMirror.reading-mode {
+  @apply cursor-default;
+}
+
+.ProseMirror.reading-mode:focus {
+  @apply outline-none;
+}
+
+/* Ensure proper line height and spacing for reading */
+.ProseMirror.reading-mode p {
+  @apply mb-6 leading-8;
+}
+
+.ProseMirror.reading-mode h1 {
+  @apply mt-8 mb-6 first:mt-0;
+}
+
+.ProseMirror.reading-mode h2 {
+  @apply mt-6 mb-4 first:mt-0;
+}
+
+.ProseMirror.reading-mode h3 {
+  @apply mt-4 mb-3 first:mt-0;
+}
+
+/* Better spacing for lists in reading mode */
+.ProseMirror.reading-mode ul,
+.ProseMirror.reading-mode ol {
+  @apply mb-6 ml-6;
+}
+
+.ProseMirror.reading-mode li {
+  @apply mb-2 leading-7;
+}
+
+/* Blockquote styling for reading */
+.ProseMirror.reading-mode blockquote {
+  @apply my-6 py-2;
+}

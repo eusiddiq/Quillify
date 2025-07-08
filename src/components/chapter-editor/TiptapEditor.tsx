@@ -5,6 +5,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import Typography from '@tiptap/extension-typography';
 import { useEffect } from 'react';
 import { TiptapToolbar } from './TiptapToolbar';
+import { getWordCountFromHTML } from '@/utils/wordCount';
 import './tiptap-editor.css';
 
 interface TiptapEditorProps {
@@ -59,7 +60,8 @@ export const TiptapEditor = ({
     return null;
   }
 
-  const wordCount = editor.storage.characterCount.words();
+  // Use the unified word counting method for consistency with reading mode
+  const wordCount = getWordCountFromHTML(editor.getHTML());
 
   return (
     <div className="w-full">

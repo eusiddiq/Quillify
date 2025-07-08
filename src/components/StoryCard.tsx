@@ -3,8 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Clock, BookOpen, FileText, Hash } from 'lucide-react';
 import { format } from 'date-fns';
-import { countWords, formatWordCount } from '@/lib/wordCount';
-
 interface Story {
   id: string;
   title: string;
@@ -30,15 +28,6 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
     if (!category) return null;
     return category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
-
-  const getTotalWordCount = () => {
-    if (!story.chapters || story.chapters.length === 0) return 0;
-    return story.chapters.reduce((total, chapter) => {
-      return total + countWords(chapter.content);
-    }, 0);
-  };
-
-  const totalWords = getTotalWordCount();
 
   return (
     <Card className="group border-sage-200 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:border-sage-300 overflow-hidden">

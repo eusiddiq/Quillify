@@ -6,7 +6,6 @@ import StoryForm from '@/components/StoryForm';
 import StoryEditor from '@/components/StoryEditor';
 import ChapterEditor from '@/components/ChapterEditor';
 import StoryReader from '@/components/StoryReader';
-import { KeyboardShortcuts, useKeyboardShortcuts } from '@/components/ui/keyboard-shortcuts';
 import { NavigationBreadcrumb } from '@/components/ui/navigation-breadcrumb';
 import { LogOut, Settings, User, Feather } from 'lucide-react';
 import {
@@ -77,38 +76,6 @@ const Dashboard = () => {
     setStoryEditorTab('details');
   };
 
-  // Define keyboard shortcuts for the dashboard
-  const shortcuts = [
-    {
-      key: ["Ctrl", "N"],
-      description: "Create new story",
-      category: "General",
-      action: handleCreateStory,
-    },
-    {
-      key: ["Ctrl", "L"],
-      description: "Go to library",
-      category: "Navigation", 
-      action: () => setCurrentView('library'),
-    },
-    {
-      key: ["Escape"],
-      description: "Go back/cancel",
-      category: "Navigation",
-      action: () => {
-        if (currentView !== 'library') {
-          setCurrentView('library');
-        }
-      },
-    },
-    {
-      key: ["?"],
-      description: "Show keyboard shortcuts",
-      category: "Help",
-    },
-  ];
-
-  const { triggered, KeyboardShortcutsComponent } = useKeyboardShortcuts(shortcuts);
 
   // Generate breadcrumb items based on current view
   const getBreadcrumbItems = () => {
@@ -171,8 +138,6 @@ const Dashboard = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <KeyboardShortcuts shortcuts={shortcuts} />
-              
               <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 text-sage-700 hover:text-sage-900">

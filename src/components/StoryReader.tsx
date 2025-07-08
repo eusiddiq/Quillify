@@ -8,6 +8,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Clock, ChevronDown } fr
 import { format } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getWordCountFromHTML } from '@/utils/wordCount';
+import '@/components/chapter-editor/tiptap-editor.css';
 
 interface Chapter {
   id: string;
@@ -197,7 +198,7 @@ const StoryReader = ({
           <div className="prose prose-sage max-w-none">
             {currentChapter.content ? (
               <div 
-                className="font-serif text-lg leading-relaxed text-sage-800"
+                className="ProseMirror reading-mode font-serif text-lg text-sage-800 p-4"
                 dangerouslySetInnerHTML={{ __html: currentChapter.content }}
               />
             ) : (
