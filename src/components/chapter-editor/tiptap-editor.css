@@ -1,0 +1,93 @@
+/* Tiptap Editor Custom Styles */
+
+/* Base editor styles */
+.ProseMirror {
+  @apply focus:outline-none;
+}
+
+/* Placeholder styling */
+.ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-sage-400;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Typography styles */
+.ProseMirror h1 {
+  @apply text-3xl font-bold font-serif mb-4 text-sage-900;
+}
+
+.ProseMirror h2 {
+  @apply text-2xl font-bold font-serif mb-3 text-sage-900;
+}
+
+.ProseMirror h3 {
+  @apply text-xl font-bold font-serif mb-2 text-sage-900;
+}
+
+.ProseMirror p {
+  @apply mb-4 leading-relaxed;
+}
+
+.ProseMirror ul {
+  @apply list-disc list-inside mb-4 ml-4;
+}
+
+.ProseMirror ol {
+  @apply list-decimal list-inside mb-4 ml-4;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-sage-300 pl-4 italic text-sage-700 my-4;
+}
+
+.ProseMirror code {
+  @apply bg-sage-100 px-1 py-0.5 rounded text-sm font-mono text-sage-800;
+}
+
+.ProseMirror pre {
+  @apply bg-sage-100 p-4 rounded-md overflow-x-auto mb-4;
+}
+
+.ProseMirror pre code {
+  @apply bg-transparent p-0;
+}
+
+/* List item spacing */
+.ProseMirror li {
+  @apply mb-1;
+}
+
+.ProseMirror li p {
+  @apply mb-1;
+}
+
+/* Strong and emphasis */
+.ProseMirror strong {
+  @apply font-bold;
+}
+
+.ProseMirror em {
+  @apply italic;
+}
+
+.ProseMirror s {
+  @apply line-through;
+}
+
+/* Selection highlight */
+.ProseMirror ::selection {
+  @apply bg-sage-200;
+}
+
+/* Focus styles */
+.ProseMirror:focus {
+  @apply outline-none;
+}
+
+/* Horizontal rule */
+.ProseMirror hr {
+  @apply border-t border-sage-300 my-6;
+}

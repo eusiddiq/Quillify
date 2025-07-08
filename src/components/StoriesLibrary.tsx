@@ -6,6 +6,7 @@ import StoryCard from './StoryCard';
 import EmptyStoriesState from './EmptyStoriesState';
 import StoriesHeader from './StoriesHeader';
 import StoryCardSkeleton from './skeletons/StoryCardSkeleton';
+import { getStoryTotalWordCount } from '@/utils/wordCount';
 
 interface Story {
   id: string;
@@ -17,7 +18,8 @@ interface Story {
   tags: string[] | null;
   updated_at: string;
   created_at: string;
-  chapters?: { content: string | null }[];
+  totalWordCount?: number;
+  chapterCount?: number;
 }
 
 interface StoriesLibraryProps {
@@ -55,7 +57,7 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onReadStory }: StoriesLibr
 
   const fetchStories = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: storiesData, error } = await supabase
         .from('stories')
         .select(`
           *,
@@ -66,7 +68,36 @@ const StoriesLibrary = ({ onCreateStory, onEditStory, onReadStory }: StoriesLibr
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
-      setStories(data || []);
+      
+      // Fetch chapters for each story to calculate word counts
+      const storiesWithWordCounts = await Promise.all(
+        (storiesData || []).map(async (story) => {
+          const { data: chapters, error: chaptersError } = await supabase
+            .from('chapters')
+            .select('content')
+            .eq('story_id', story.id);
+
+          if (chaptersError) {
+            console.error('Error fetching chapters for story:', story.id, chaptersError);
+            return {
+              ...story,
+              totalWordCount: 0,
+              chapterCount: 0
+            };
+          }
+
+          const totalWordCount = getStoryTotalWordCount(chapters || []);
+          const chapterCount = chapters?.length || 0;
+
+          return {
+            ...story,
+            totalWordCount,
+            chapterCount
+          };
+        })
+      );
+
+      setStories(storiesWithWordCounts);
     } catch (error) {
       console.error('Error fetching stories:', error);
       toast({

@@ -64,6 +64,50 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     fetchChapters().finally(() => setInitialLoading(false));
   }, [storyId]);
 
+  // Add event listeners to save changes when user navigates away
+  useEffect(() => {
+    const hasChanges = () => 
+      selectedChapter && (
+        chapterTitle !== originalTitle || 
+        chapterContent !== originalContent
+      );
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (hasChanges()) {
+        // Show browser's default warning dialog
+        event.preventDefault();
+        event.returnValue = '';
+        
+        // Attempt to save changes (may not complete due to browser restrictions)
+        saveBeforeSwitch();
+      }
+    };
+
+    const handlePageHide = () => {
+      // More reliable for mobile browsers
+      if (hasChanges()) {
+        saveBeforeSwitch();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      // When page becomes hidden, save changes
+      if (document.hidden && hasChanges()) {
+        saveBeforeSwitch();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('pagehide', handlePageHide);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('pagehide', handlePageHide);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [selectedChapter, chapterTitle, chapterContent, originalTitle, originalContent, saveBeforeSwitch]);
+
   // Auto-select the chapter if selectedChapterId is provided, but only once
   useEffect(() => {
     if (selectedChapterId && chapters.length > 0 && !hasInitiallySelected.current && !initialLoading) {
@@ -121,12 +165,18 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     }
   };
 
+  const handleBackToStory = async () => {
+    // Save current chapter if there are changes before navigating back
+    await saveBeforeSwitch();
+    onBack();
+  };
+
   if (initialLoading) {
     return (
       <div className="max-w-7xl mx-auto">
         <ChapterEditorHeader 
           storyTitle={storyTitle}
-          onBack={onBack}
+          onBack={handleBackToStory}
         />
         <ChapterEditorSkeleton />
       </div>
@@ -137,7 +187,7 @@ const ChapterEditor = ({ storyId, storyTitle, selectedChapterId, onBack }: Chapt
     <div className="max-w-7xl mx-auto">
       <ChapterEditorHeader 
         storyTitle={storyTitle}
-        onBack={onBack}
+        onBack={handleBackToStory}
       />
 
       <div className="max-w-4xl mx-auto">

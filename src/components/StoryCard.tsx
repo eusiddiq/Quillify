@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, Clock, BookOpen, FileText } from 'lucide-react';
+import { Edit, Trash2, Clock, BookOpen, FileText, Hash } from 'lucide-react';
 import { format } from 'date-fns';
 import { countWords, formatWordCount } from '@/lib/wordCount';
 
@@ -14,7 +14,8 @@ interface Story {
   tags: string[] | null;
   updated_at: string;
   created_at: string;
-  chapters?: { content: string | null }[];
+  totalWordCount?: number;
+  chapterCount?: number;
 }
 
 interface StoryCardProps {
@@ -98,9 +99,19 @@ const StoryCard = ({ story, onEdit, onDelete, onRead }: StoryCardProps) => {
               Updated {format(new Date(story.updated_at), 'MMM d, yyyy')}
             </span>
           </div>
-          <div className="flex items-center gap-1">
-            <FileText className="w-3 h-3" />
-            <span>{formatWordCount(totalWords)}</span>
+          <div className="flex items-center gap-3">
+            {story.chapterCount !== undefined && (
+              <div className="flex items-center gap-1">
+                <Hash className="w-3 h-3" />
+                <span>{story.chapterCount} {story.chapterCount === 1 ? 'chapter' : 'chapters'}</span>
+              </div>
+            )}
+            {story.totalWordCount !== undefined && (
+              <div className="flex items-center gap-1">
+                <FileText className="w-3 h-3" />
+                <span>{story.totalWordCount.toLocaleString()} words</span>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>

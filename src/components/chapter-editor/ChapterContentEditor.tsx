@@ -7,6 +7,7 @@ import { SaveStatus } from '@/components/ui/save-status';
 import { Save, Clock, BookOpen, Plus, PenTool, Zap } from 'lucide-react';
 import { format } from 'date-fns';
 import { useRef } from 'react';
+import { TiptapEditor } from './TiptapEditor';
 
 interface Chapter {
   id: string;
@@ -43,14 +44,6 @@ const ChapterContentEditor = ({
   onCreateChapter
 }: ChapterContentEditorProps) => {
   const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  // Calculate word count
-  const getWordCount = (text: string) => {
-    if (!text.trim()) return 0;
-    return text.trim().split(/\s+/).length;
-  };
-
-  const wordCount = getWordCount(chapterContent);
 
   if (!selectedChapter) {
     return (
@@ -142,22 +135,17 @@ const ChapterContentEditor = ({
         </div>
       </CardHeader>
       <CardContent>
-        <Label htmlFor="chapter-content" className="text-sage-800 font-medium">
+        <Label htmlFor="chapter-content" className="text-sage-800 font-medium mb-2 block">
           Chapter Content
         </Label>
-        <textarea
-          ref={contentRef}
-          id="chapter-content"
-          value={chapterContent}
-          onChange={(e) => onContentChange(e.target.value)}
-          placeholder="Start writing your chapter..."
-          rows={25}
-          className="w-full mt-2 p-4 border border-sage-200 rounded-md focus:border-sage-400 focus:ring-2 focus:ring-sage-200 font-serif text-lg leading-relaxed resize-none"
-          style={{ minHeight: '500px' }}
-        />
-        <p className="text-xs text-sage-500 mt-2">
-          {wordCount} {wordCount === 1 ? 'word' : 'words'}
-        </p>
+        <div className="border border-sage-200 rounded-md overflow-hidden bg-white" style={{ minHeight: '500px' }}>
+          <TiptapEditor
+            content={chapterContent}
+            onChange={onContentChange}
+            placeholder="Start writing your chapter..."
+            className="min-h-[500px] p-4 font-serif text-lg leading-relaxed"
+          />
+        </div>
       </CardContent>
     </Card>
   );

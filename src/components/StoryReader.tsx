@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen, Clock, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getWordCountFromHTML } from '@/utils/wordCount';
 
 interface Chapter {
   id: string;
@@ -103,10 +104,6 @@ const StoryReader = ({
     }
   };
 
-  const getWordCount = (text: string) => {
-    if (!text || !text.trim()) return 0;
-    return text.trim().split(/\s+/).length;
-  };
 
   if (loading) {
     return <div className="max-w-4xl mx-auto">
@@ -192,18 +189,23 @@ const StoryReader = ({
                 Updated {format(new Date(currentChapter.updated_at), 'MMM d, yyyy')}
               </div>
               <div>
-                {getWordCount(currentChapter.content || '')} words
+                {getWordCountFromHTML(currentChapter.content)} words
               </div>
             </div>
           </div>
 
           <div className="prose prose-sage max-w-none">
-            {currentChapter.content ? <div className="font-serif text-lg leading-relaxed text-sage-800 whitespace-pre-wrap">
-                {currentChapter.content}
-              </div> : <div className="text-center py-12 text-sage-500">
+            {currentChapter.content ? (
+              <div 
+                className="font-serif text-lg leading-relaxed text-sage-800"
+                dangerouslySetInnerHTML={{ __html: currentChapter.content }}
+              />
+            ) : (
+              <div className="text-center py-12 text-sage-500">
                 <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p>This chapter is empty.</p>
-              </div>}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
